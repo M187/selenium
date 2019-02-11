@@ -91,7 +91,7 @@ public class MortageLoanCalculatorPageObject {
     public void validateCalculationResult(){
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr[1]/td")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"analysisDiv\"]/table/thead")));
 
         WebElement monthlyPrincipalAndInterests;
         WebElement loanToValueRatio;
