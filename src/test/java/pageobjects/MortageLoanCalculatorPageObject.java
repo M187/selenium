@@ -100,9 +100,9 @@ public class MortageLoanCalculatorPageObject {
         assertTrue(monthlyPrincipalAndInterests.isDisplayed(), "Monthly principal & interests is not displayed!");
         assertEquals(monthlyPrincipalAndInterests.getText(),"$1,073.64","Monthly principal & interests has been incorrectly calculated!");
 
-//        loanToValueRatio = driver.findElement(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr[4]/td"));
-//        assertTrue(loanToValueRatio.isDisplayed(),"Loan To Value Ratio is not displayed!");
-//        assertEquals(loanToValueRatio.getText(), "85.11%","Loan To Value Ratio has been incorrectly calculated!");
+        loanToValueRatio = driver.findElement(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr[4]/td"));
+        assertTrue(loanToValueRatio.isDisplayed(),"Loan To Value Ratio is not displayed!");
+        assertEquals(loanToValueRatio.getText(), "85.11%","Loan To Value Ratio has been incorrectly calculated!");
 
         totalMonthlyPayments = driver.findElement(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr[7]/td"));
         assertTrue(totalMonthlyPayments.isDisplayed(),"Total monthly payments is not displayed!");
