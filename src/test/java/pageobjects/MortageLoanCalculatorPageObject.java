@@ -1,14 +1,15 @@
 package pageobjects;
 
 import lombok.Getter;
+import org.assertj.core.api.SoftAssertions;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.assertEquals;
+import java.util.List;
 
 @Getter
 public class MortageLoanCalculatorPageObject {
@@ -96,16 +97,45 @@ public class MortageLoanCalculatorPageObject {
         WebElement loanToValueRatio;
         WebElement totalMonthlyPayments;
 
-        monthlyPrincipalAndInterests = driver.findElement(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr[1]/td"));
-        assertTrue(monthlyPrincipalAndInterests.isDisplayed(), "Monthly principal & interests is not displayed!");
-        assertEquals(monthlyPrincipalAndInterests.getText(),"$1,073.64","Monthly principal & interests has been incorrectly calculated!");
+        SoftAssertions softly = new SoftAssertions();
 
-        loanToValueRatio = driver.findElement(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr[4]/td"));
-        assertTrue(loanToValueRatio.isDisplayed(),"Loan To Value Ratio is not displayed!");
-        assertEquals(loanToValueRatio.getText(), "85.11%","Loan To Value Ratio has been incorrectly calculated!");
+        try {
+            monthlyPrincipalAndInterests = driver.findElement(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr[" + findMyRow("Monthly Principal & Interests") + "]/td"));
+            softly.assertThat(monthlyPrincipalAndInterests.isDisplayed()).as("Monthly principal & interests is not displayed!").isEqualTo(true);
+            softly.assertThat(monthlyPrincipalAndInterests.getText()).as("Monthly principal & interests has been incorrectly calculated!").isEqualTo("$1,073.64");
+        } catch (NoSuchElementException e){
+            softly.assertThat(false).as("Monthly principal & interests element is not present on page!").isEqualTo(true);
+        }
 
-        totalMonthlyPayments = driver.findElement(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr[7]/td"));
-        assertTrue(totalMonthlyPayments.isDisplayed(),"Total monthly payments is not displayed!");
-        assertEquals(totalMonthlyPayments.getText(), "$1,482.39","Total monthly payments has been incorrectly calculated!");
+        try {
+            loanToValueRatio = driver.findElement(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr[" + findMyRow("Loan To Value Ratio") + "]/td"));
+            softly.assertThat(loanToValueRatio.isDisplayed()).as("Loan To Value Ratio is not displayed!").isEqualTo(true);
+            softly.assertThat(loanToValueRatio.getText()).as("Loan To Value Ratio has been incorrectly calculated!").isEqualTo("85.11%");
+        } catch (NoSuchElementException e){
+            softly.assertThat(false).as("Loan To Value Ratio element is not present on page!").isEqualTo(true);
+        }
+
+        try {
+            totalMonthlyPayments = driver.findElement(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr[" + findMyRow("Total Monthly Payments") + "]/td"));
+            softly.assertThat(totalMonthlyPayments.isDisplayed()).as("Total monthly payments is not displayed!").isEqualTo(true);
+            softly.assertThat(totalMonthlyPayments.getText()).as("Total monthly payments has been incorrectly calculated!").isEqualTo("$1,482.39");
+        } catch (NoSuchElementException e){
+            softly.assertThat(false).as("Total monthly payments element is not present on page!").isEqualTo(true);
+        }
+
+        softly.assertAll();
+    }
+
+
+    private String findMyRow(String rowText){
+        List<WebElement> table = driver.findElements(By.xpath("//*[@id=\"analysisDiv\"]/table/thead/tr"));
+        int iterator = 0;
+        for (WebElement temp : table){
+            iterator++;
+            if (temp.getText().contains(rowText)){
+                return String.valueOf(iterator);
+            }
+        }
+        return "100";
     }
 }

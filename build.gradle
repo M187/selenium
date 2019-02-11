@@ -15,6 +15,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
     testCompile group: 'org.testng', name: 'testng', version: '7.0.0-beta3'
+    testCompile("org.assertj:assertj-core:3.11.1")
 
     testCompile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.2'
     testCompile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
